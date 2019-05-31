@@ -1,0 +1,10 @@
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\bin\Debug\simulatekeys.exe.config
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\bin\Debug\simulatekeys.exe
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\bin\Debug\simulatekeys.pdb
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.Form1.resources
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.Properties.Resources.resources
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csproj.GenerateResource.cache
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csproj.CoreCompileInputs.cache
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.exe
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.pdb
+C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmSetKey.resources
