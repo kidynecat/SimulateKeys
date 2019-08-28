@@ -1,0 +1,1 @@
+{"112":{"hotKeyCode":"112","hotKeyName":"F1","keyHandles":{"49":{"startInterval":0,"endInterval":500,"hitKeyName":"D1","hitKeyCode":"49"},"50":{"startInterval":0,"endInterval":500,"hitKeyName":"D2","hitKeyCode":"50"},"51":{"startInterval":0,"endInterval":500,"hitKeyName":"D3","hitKeyCode":"51"},"52":{"startInterval":0,"endInterval":500,"hitKeyName":"D4","hitKeyCode":"52"}}}}
