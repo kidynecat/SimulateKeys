@@ -43,7 +43,8 @@ namespace simulatekeys
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            clearTrpool();
+            cancelHotKey();
         }
 
 
@@ -81,9 +82,7 @@ namespace simulatekeys
 
                     break;
                 case WM_DESTROY: //窗口消息-销毁
-                    //AppHotKey.UnRegKey(Handle, F7); //销毁热键
-                    clearTrpool();
-                    cancelHotKey();
+
                     break;
                 default:
                     break;
@@ -229,7 +228,7 @@ namespace simulatekeys
                 return;
             }
             hotkey.keyHandles.Add(arg2.keycode, new KeyHandle() {hitKeyCode = arg2.keycode,hitKeyName = arg2.keyname});
-            AddHandleKey(nowHotKeyCode, arg2.keycode, arg2.keyname,"0","0","1000");
+            AddHandleKey(nowHotKeyCode, arg2.keycode, arg2.keyname,"0","100","1000");
 
         }
 
@@ -582,6 +581,37 @@ namespace simulatekeys
             {
                 t.Start();
             }
+        }
+
+        private void SKT_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                //还原窗体显示    
+                WindowState = FormWindowState.Normal;
+                //激活窗体并给予它焦点
+                this.Activate();
+                //任务栏区显示图标
+                this.ShowInTaskbar = true;
+                //托盘区图标隐藏
+                SKT.Visible = false;
+            }
+            cancelHotKey();
+            registerHotKey();
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            //判断是否选择的是最小化按钮
+            if (WindowState == FormWindowState.Minimized)
+            {
+                //隐藏任务栏区图标
+                this.ShowInTaskbar = false;
+                //图标显示在托盘区
+                SKT.Visible = true;
+            }
+            cancelHotKey();
+            registerHotKey();
         }
     }
 }
