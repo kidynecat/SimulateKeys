@@ -8,23 +8,26 @@ namespace simulatekeys
 {
     public static class sysParam
     {
-        public static Dictionary<string,hotkeyData> hotkeyDatas = new Dictionary<string, hotkeyData>();
+        public static Dictionary<string,HotkeyData> hotkeyDatas = new Dictionary<string, HotkeyData>();
     }
 
 
-    public class hotkeyData
+    public class HotkeyData
     {
         public string hotKeyCode;
         public string hotKeyName;
-        public Dictionary<string,keyHandle> keyHandles;
+        public Dictionary<string,KeyHandle> keyHandles;
     }
 
-    public class keyHandle
+
+    public class KeyHandle
     {
-        public int startInterval = 0;
-        public int endInterval = 0;
+        public int Interval = 1000;
+        public int startDelay = 0;
+        public int endDelay = 0;
         public string hitKeyName;
         public string hitKeyCode;
+        public int type = 0;
  
     }
 }

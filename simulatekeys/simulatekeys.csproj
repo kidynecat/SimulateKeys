@@ -96,11 +96,5 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\MainNateDevelopTools\NateDevelopTools\NateDevelopTools.csproj">
-      <Project>{9d40e0ac-291d-4c4a-b381-27f174aa38cc}</Project>
-      <Name>NateDevelopTools</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

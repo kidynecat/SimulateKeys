@@ -22,9 +22,3 @@ E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.pdb
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\Newtonsoft.Json.dll
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\Newtonsoft.Json.xml
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csproj.CopyComplete
-E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\NateDevelopTools.dll
-E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\NPOI.dll
-E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\NPOI.OOXML.dll
-E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\NPOI.OpenXmlFormats.dll
-E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\NPOI.OpenXml4Net.dll
-E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\NateDevelopTools.pdb
