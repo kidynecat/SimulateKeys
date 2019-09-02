@@ -18,6 +18,7 @@ namespace simulatekeys
     {
 
         Dictionary<string, System.Timers.Timer> TrsPool = new Dictionary<string, System.Timers.Timer>();
+        Dictionary<string, System.Timers.ElapsedEventHandler> TrHandles = new Dictionary<string, System.Timers.ElapsedEventHandler>();
 
         List<int> RegisteredHotKey = new List<int>();
 
@@ -512,10 +513,9 @@ namespace simulatekeys
             foreach (var khk in dictrhd.Keys)
             {
 
-                TrsPool[khk].Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+
+                System.Timers.ElapsedEventHandler trhandle = ( sender, e) =>
                 {
-
-
                     foreach (var kn in dictrhd[khk])
                     {
                         if (kn.startDelay > 0)
@@ -531,6 +531,9 @@ namespace simulatekeys
                         }
                     }
                 };
+
+                TrHandles.Add(khk, trhandle);
+                TrsPool[khk].Elapsed += trhandle;
             }
 
 
@@ -546,6 +549,7 @@ namespace simulatekeys
             }
 
             TrsPool.Clear();
+            TrHandles.Clear();
         }
 
         //刷新热键数据
@@ -596,11 +600,14 @@ namespace simulatekeys
                 {
                     if (tr.Value.Enabled == false)
                     {
-                        
+                        //先触发一次
+                        TrHandles[tr.Key].Invoke(null,null);
+                        //开始计时器
                         tr.Value.Start();
                     }
                     else
                     {
+                        //停止计时器
                         tr.Value.Stop();
                     }
                 }
@@ -668,6 +675,7 @@ namespace simulatekeys
 
         }
 
+        //修改名称
         private void button5_Click(object sender, EventArgs e)
         {
             if (textBox1.Visible == false)

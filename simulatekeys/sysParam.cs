@@ -41,7 +41,7 @@ namespace simulatekeys
     {
         public int Interval = 1000;
         public int startDelay = 0;
-        public int endDelay = 0;
+        public int endDelay = 100;
         public string hitKeyName;
         public string hitKeyCode;
         public int type = 0;

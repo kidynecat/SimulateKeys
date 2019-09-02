@@ -23,3 +23,4 @@ E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csproj.CopyComplet
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmAddNew.resources
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmMain.resources
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmLoad.resources
+E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csprojAssemblyReference.cache
