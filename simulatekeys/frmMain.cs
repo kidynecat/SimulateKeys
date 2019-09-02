@@ -14,37 +14,71 @@ using System.IO;
 
 namespace simulatekeys
 {
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
 
         Dictionary<string, System.Timers.Timer> TrsPool = new Dictionary<string, System.Timers.Timer>();
 
         List<int> RegisteredHotKey = new List<int>();
 
-        public Form1()
+        public frmMain()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            button3_Click(this, null);
+            //button3_Click(this, null);
 
 
             //Tr.AutoReset = true;
             //Tr.Interval = 500;
             //Tr.Elapsed += hotkeyhander;
+            //加载所有存档
+            if (File.Exists(System.AppDomain.CurrentDomain.BaseDirectory + "sav.kd"))
+            {
+                keydatastring = File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + "\\sav.kd");
+                sysParam.saveData = JsonConvert.DeserializeObject<SaveData>(keydatastring);
+            }
+            else
+            {
+                var tmp = new Dictionary<string, Dictionary<string, HotkeyData>>();
+                tmp.Add("默认", new Dictionary<string, HotkeyData>());
+                sysParam.saveData = new SaveData("默认", tmp);
+            }
 
-            
+            //默认读取一个存档
+            if(sysParam.saveData.dicSaveData.Count > 0 && sysParam.saveData.dicSaveData.ContainsKey(sysParam.saveData.defaultData))
+            {
+                sysParam.hotKeyDatas = sysParam.saveData.dicSaveData[sysParam.saveData.defaultData];
+                this.label1.Text = sysParam.saveData.defaultData;
+            }
+            else
+            {
+                sysParam.hotKeyDatas = new Dictionary<string, HotkeyData>();
+                this.label1.Text = "默认";
+            }
 
-
+            reflashKeydatas();
+            saveTrpool();
+            registerHotKey();
 
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             clearTrpool();
+
+            sysParam.saveData.defaultData = label1.Text;
+            string data = JsonConvert.SerializeObject(sysParam.saveData);
+            keydatastring = data;
+            //Console.WriteLine(data);
+
+            var path = System.AppDomain.CurrentDomain.BaseDirectory;
             cancelHotKey();
+            savefile(keydatastring, path, "sav");
+
+            //cancelHotKey();
         }
 
 
@@ -145,13 +179,13 @@ namespace simulatekeys
         //添加完成事件
         private void Fs_SetKeyEventHandle(object arg1, SetKeyEventArgs arg2)
         {
-            if (sysParam.hotkeyDatas.Keys.Contains(arg2.keycode))
+            if (sysParam.hotKeyDatas.Keys.Contains(arg2.keycode))
             {
                 MessageBox.Show("按键重复");
                 return;
             }
 
-            sysParam.hotkeyDatas.Add(arg2.keycode, new HotkeyData() { hotKeyCode = arg2.keycode, hotKeyName = arg2.keyname, keyHandles = new Dictionary<string, KeyHandle>() });
+            sysParam.hotKeyDatas.Add(arg2.keycode, new HotkeyData() { hotKeyCode = arg2.keycode, hotKeyName = arg2.keyname, keyHandles = new Dictionary<string, KeyHandle>() });
 
             AddHotKey(arg2.keycode,arg2.keyname);
 
@@ -214,14 +248,14 @@ namespace simulatekeys
         {
             string handlekeycode = (sender as Button).Parent.Name.Substring(6);
 
-            sysParam.hotkeyDatas.Remove(handlekeycode);
+            sysParam.hotKeyDatas.Remove(handlekeycode);
 
             (sender as Button).Parent.Parent.Controls.Remove((sender as Button).Parent);
         }
 
         private void b2_SetKeyEventHandle(object arg1, SetKeyEventArgs arg2)
         {
-            var hotkey = sysParam.hotkeyDatas[nowHotKeyCode];
+            var hotkey = sysParam.hotKeyDatas[nowHotKeyCode];
             if(hotkey.keyHandles.ContainsKey(arg2.keycode))
             {
                 MessageBox.Show("Sorry不能重复添加");
@@ -296,7 +330,7 @@ namespace simulatekeys
             string handlekeycode = (sender as Button).Parent.Name.Substring(1);
             string hotkeycode = (sender as Button).Parent.Parent.Name.Substring(3);
 
-            sysParam.hotkeyDatas[hotkeycode].keyHandles.Remove(handlekeycode);
+            sysParam.hotKeyDatas[hotkeycode].keyHandles.Remove(handlekeycode);
 
             (sender as Button).Parent.Parent.Controls.Remove((sender as Button).Parent);
         }
@@ -310,11 +344,11 @@ namespace simulatekeys
             int v = 0;
             if( int.TryParse((sender as TextBox).Text,out v))
             {
-                sysParam.hotkeyDatas[hotkeycode].keyHandles[handlekeycode].startDelay = v;
+                sysParam.hotKeyDatas[hotkeycode].keyHandles[handlekeycode].startDelay = v;
             }
             else
             {
-                sysParam.hotkeyDatas[hotkeycode].keyHandles[handlekeycode].startDelay = 0;
+                sysParam.hotKeyDatas[hotkeycode].keyHandles[handlekeycode].startDelay = 0;
                (sender as TextBox).Text = "0";
             }
 
@@ -329,11 +363,11 @@ namespace simulatekeys
             int v = 0;
             if (int.TryParse((sender as TextBox).Text, out v))
             {
-                sysParam.hotkeyDatas[hotkeycode].keyHandles[handlekeycode].endDelay = v;
+                sysParam.hotKeyDatas[hotkeycode].keyHandles[handlekeycode].endDelay = v;
             }
             else
             {
-                sysParam.hotkeyDatas[hotkeycode].keyHandles[handlekeycode].endDelay = 0;
+                sysParam.hotKeyDatas[hotkeycode].keyHandles[handlekeycode].endDelay = 0;
                (sender as TextBox).Text = "0";
             }
         }
@@ -347,11 +381,11 @@ namespace simulatekeys
             int v = 0;
             if (int.TryParse((sender as TextBox).Text, out v))
             {
-                sysParam.hotkeyDatas[hotkeycode].keyHandles[handlekeycode].Interval = v;
+                sysParam.hotKeyDatas[hotkeycode].keyHandles[handlekeycode].Interval = v;
             }
             else
             {
-                sysParam.hotkeyDatas[hotkeycode].keyHandles[handlekeycode].Interval = 0;
+                sysParam.hotKeyDatas[hotkeycode].keyHandles[handlekeycode].Interval = 0;
                 (sender as TextBox).Text = "0";
             }
         }
@@ -374,9 +408,12 @@ namespace simulatekeys
         {
             //Console.WriteLine(sysParam.hotkeyDatas);
 
-            string data = JsonConvert.SerializeObject(sysParam.hotkeyDatas);
+
+
+            sysParam.saveData.defaultData = label1.Text;
+            string data = JsonConvert.SerializeObject(sysParam.saveData);
             keydatastring = data;
-            Console.WriteLine(data);
+            //Console.WriteLine(data);
 
             var path = System.AppDomain.CurrentDomain.BaseDirectory;
             cancelHotKey();
@@ -389,28 +426,23 @@ namespace simulatekeys
         //加载
         private void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (File.Exists(System.AppDomain.CurrentDomain.BaseDirectory + "sav.txt"))
-                {
-                    keydatastring = File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + "\\sav.txt");
-                }
-                else
-                {
-                    keydatastring = "";
-                }
+            frmLoad frl = new frmLoad();
+            frl.DataLoadHandle += Frl_DataLoadHandle;
+            frl.ShowDialog();
 
-                sysParam.hotkeyDatas = JsonConvert.DeserializeObject<Dictionary<string, HotkeyData>>(keydatastring);
-            }
-            catch
-            {
-                sysParam.hotkeyDatas = new Dictionary<string, HotkeyData>();
-            }
+
+        }
+
+        private void Frl_DataLoadHandle(object arg1, frmLoad.DataLoadEventArgs arg2)
+        {
+            Console.WriteLine(arg2.DataName);
+            label1.Text = arg2.DataName;
+            sysParam.saveData.defaultData = arg2.DataName;
+            sysParam.hotKeyDatas = sysParam.saveData.dicSaveData[sysParam.saveData.defaultData];
             cancelHotKey();
             reflashKeydatas();
             saveTrpool();
             registerHotKey();
-
         }
 
         //保存文件
@@ -421,7 +453,7 @@ namespace simulatekeys
             if (!Directory.Exists(FilePatch))
                 Directory.CreateDirectory(FilePatch);
 
-            string fileFullPath = FilePatch + "\\"  + FileName + ".txt";
+            string fileFullPath = FilePatch + "\\"  + FileName + ".kd";
             StringBuilder str = new StringBuilder();
             str.Append(data);
            
@@ -446,7 +478,7 @@ namespace simulatekeys
 
             Dictionary<string, List<KeyHandle>> dictrhd = new Dictionary<string, List<KeyHandle>>();
 
-            foreach (var hk in sysParam.hotkeyDatas)
+            foreach (var hk in sysParam.hotKeyDatas)
             {
                 string hkname = hk.Key;
 
@@ -522,7 +554,7 @@ namespace simulatekeys
 
             flowLayoutPanel1.Controls.Clear();
             
-            foreach(var hkd in sysParam.hotkeyDatas.Values )
+            foreach(var hkd in sysParam.hotKeyDatas.Values )
             {
                 AddHotKey(hkd.hotKeyCode, hkd.hotKeyName);
                 foreach (var hk in hkd.keyHandles.Values)
@@ -537,7 +569,7 @@ namespace simulatekeys
         private void registerHotKey()
         {
             RegisteredHotKey.Clear();
-            foreach (var hotk in sysParam.hotkeyDatas)
+            foreach (var hotk in sysParam.hotKeyDatas)
             {
                 string res = AppHotKey.RegKey(Handle, int.Parse( hotk.Value.hotKeyCode), 0, (Keys)int.Parse(hotk.Value.hotKeyCode));
                 Console.WriteLine(res);
@@ -564,6 +596,7 @@ namespace simulatekeys
                 {
                     if (tr.Value.Enabled == false)
                     {
+                        
                         tr.Value.Start();
                     }
                     else
@@ -612,6 +645,74 @@ namespace simulatekeys
             }
             cancelHotKey();
             registerHotKey();
+        }
+
+        private void 关闭ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        //新建
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            cancelHotKey();
+            clearTrpool();
+
+            frmAddNew fra = new frmAddNew();
+            fra.ShowDialog(this);
+
+            clearTrpool();
+            reflashKeydatas();
+            cancelHotKey();
+
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Visible == false)
+            {
+                textBox1.Text = "";
+                textBox1.Show();
+                textBox1.Focus();
+
+                button5.Text = "确定";
+            }
+            else
+            {
+                changeName();
+                button5.Text = "修改名称";
+            }
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+
+                changeName();
+            }
+
+        }
+
+        private void changeName()
+        {
+            if (string.IsNullOrEmpty(textBox1.Text))
+            {
+                MessageBox.Show("不能为空");
+                return;
+            }
+
+            if (sysParam.saveData.dicSaveData.ContainsKey(textBox1.Text))
+            {
+                MessageBox.Show("名称已存在");
+                return;
+            }
+
+            sysParam.saveData.dicSaveData.Add(textBox1.Text, sysParam.saveData.dicSaveData[label1.Text]);
+            sysParam.saveData.dicSaveData.Remove(label1.Text);
+            label1.Text = textBox1.Text;
+            textBox1.Hide();
         }
     }
 }

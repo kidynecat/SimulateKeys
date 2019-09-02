@@ -8,7 +8,24 @@ namespace simulatekeys
 {
     public static class sysParam
     {
-        public static Dictionary<string,HotkeyData> hotkeyDatas = new Dictionary<string, HotkeyData>();
+        public static Dictionary<string,HotkeyData> hotKeyDatas = new Dictionary<string, HotkeyData>();
+
+        //public static Dictionary<string, Dictionary<string, HotkeyData>> dicSaveData = new Dictionary<string, Dictionary<string, HotkeyData>>();
+
+        public static SaveData saveData;
+    }
+
+    
+    public class SaveData
+    {
+        public SaveData(string _defaultData, Dictionary<string, Dictionary<string, HotkeyData>> _dicSaveData)
+        {
+            dicSaveData = _dicSaveData;
+            defaultData = _defaultData;
+        }
+
+        public string defaultData = "";
+        public Dictionary<string, Dictionary<string, HotkeyData>> dicSaveData;
     }
 
 

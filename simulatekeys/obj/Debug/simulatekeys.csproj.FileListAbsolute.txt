@@ -11,7 +11,6 @@ C:\Users\Nate\source\repos\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmS
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\simulatekeys.exe.config
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\simulatekeys.exe
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\simulatekeys.pdb
-E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.Form1.resources
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmSetKey.resources
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.Properties.Resources.resources
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csproj.GenerateResource.cache
@@ -21,3 +20,6 @@ E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.pdb
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\Newtonsoft.Json.dll
 E:\DevWorkMy\simulatekeys\simulatekeys\bin\Debug\Newtonsoft.Json.xml
 E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.csproj.CopyComplete
+E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmAddNew.resources
+E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmMain.resources
+E:\DevWorkMy\simulatekeys\simulatekeys\obj\Debug\simulatekeys.frmLoad.resources
